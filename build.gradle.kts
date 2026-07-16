@@ -14,6 +14,9 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT")
+
+    compileOnly("org.projectlombok:lombok:1.18.46")
+    annotationProcessor("org.projectlombok:lombok:1.18.46")
 }
 
 java {
@@ -21,6 +24,7 @@ java {
 }
 
 val pluginName: String by project
+val pluginPackage: String by project
 val pluginVersion: String by project
 val pluginDescription: String by project
 val pluginMainClass: String by project
@@ -54,6 +58,7 @@ tasks.named<ShadowJar>("shadowJar") {
 
 tasks.shadowJar {
     configurations = project.configurations.runtimeClasspath.map { setOf(it) }
+    archiveClassifier.set("")
 }
 
 tasks {
@@ -81,3 +86,4 @@ tasks {
         }
     }
 }
+
