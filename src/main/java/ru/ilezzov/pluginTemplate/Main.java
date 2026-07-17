@@ -38,7 +38,9 @@ public final class Main extends JavaPlugin {
             pluginLogger.debug(this.consoleMessage.getMessage("system.debug.enabled"));
         }
 
-        this.messageFile = loadMessageFile(this.configFile.language.concat(".yml"));
+        final String messageFileName = this.configFile.language.concat(".yml");
+        this.messageFile = loadMessageFile(messageFileName);
+        pluginLogger.debug(this.consoleMessage.getMessage("plugin.file.message.loaded", messageFileName));
     }
 
     @Override
