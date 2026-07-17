@@ -10,6 +10,7 @@ import ru.ilezzov.pluginTemplate.file.ConfigFile;
 import ru.ilezzov.pluginTemplate.file.MessageFile;
 import ru.ilezzov.pluginTemplate.logger.ConsoleMessage;
 import ru.ilezzov.pluginTemplate.logger.PluginLogger;
+import ru.ilezzov.pluginTemplate.manager.MessageManager;
 
 import java.io.File;
 import java.text.MessageFormat;
@@ -27,6 +28,9 @@ public final class Main extends JavaPlugin {
     @Getter
     private MessageFile messageFile;
 
+    @Getter
+    private MessageManager messageManager;
+
     @Override
     public void onEnable() {
         this.pluginLogger = new PluginLogger(this);
@@ -39,8 +43,12 @@ public final class Main extends JavaPlugin {
         }
 
         final String messageFileName = this.configFile.language.concat(".yml");
+
         this.messageFile = loadMessageFile(messageFileName);
+        this.messageManager = new MessageManager(this, messageFile);
+
         pluginLogger.debug(this.consoleMessage.getMessage("plugin.file.message.loaded", messageFileName));
+
     }
 
     @Override
