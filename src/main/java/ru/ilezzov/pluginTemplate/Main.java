@@ -30,6 +30,10 @@ public final class Main extends JavaPlugin {
         this.consoleMessage = new ConsoleMessage("messages");
 
         this.configFile = loadConfig();
+        if (configFile.debug) {
+            this.pluginLogger.setDebug(true);
+            pluginLogger.debug(this.consoleMessage.getMessage("system.debug.enabled"));
+        }
     }
 
     @Override
