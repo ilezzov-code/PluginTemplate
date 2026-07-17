@@ -7,6 +7,7 @@ import lombok.Getter;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import ru.ilezzov.pluginTemplate.file.ConfigFile;
+import ru.ilezzov.pluginTemplate.file.MessageFile;
 import ru.ilezzov.pluginTemplate.logger.ConsoleMessage;
 import ru.ilezzov.pluginTemplate.logger.PluginLogger;
 
@@ -23,6 +24,8 @@ public final class Main extends JavaPlugin {
 
     @Getter
     private ConfigFile configFile;
+    @Getter
+    private MessageFile messageFile;
 
     @Override
     public void onEnable() {
@@ -34,6 +37,8 @@ public final class Main extends JavaPlugin {
             this.pluginLogger.setDebug(true);
             pluginLogger.debug(this.consoleMessage.getMessage("system.debug.enabled"));
         }
+
+        this.messageFile = loadMessageFile(this.configFile.language.concat(".yml"));
     }
 
     @Override
@@ -46,6 +51,25 @@ public final class Main extends JavaPlugin {
                 .configure(opt -> {
                     opt.configurer(new YamlBukkitConfigurer(), new SerdesBukkit());
                     opt.bindFile(new File(this.getDataFolder(), "config.yml"));
+                    opt.removeOrphans(true);
+                })
+                .saveDefaults()
+                .load(true);
+    }
+
+    private MessageFile loadMessageFile(final String file) {
+        final File messageDir = new File(this.getDataFolder(), "messages");
+        final File messageFile = new File(messageDir, file);
+
+        if (!messageFile.exists()) {
+            messageFile.getParentFile().mkdirs();
+            this.saveResource("messages/".concat(file), false);
+        }
+
+        return (MessageFile) ConfigManager.create(MessageFile.class)
+                .configure(opt -> {
+                    opt.configurer(new YamlBukkitConfigurer());
+                    opt.bindFile(messageFile);
                     opt.removeOrphans(true);
                 })
                 .saveDefaults()
