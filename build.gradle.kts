@@ -10,6 +10,7 @@ plugins {
 repositories {
     mavenCentral()
     maven("https://repo.papermc.io/repository/maven-public/")
+    maven("https://repo.okaeri.cloud/releases")
 }
 
 dependencies {
@@ -17,6 +18,9 @@ dependencies {
 
     compileOnly("org.projectlombok:lombok:1.18.46")
     annotationProcessor("org.projectlombok:lombok:1.18.46")
+
+    implementation("eu.okaeri:okaeri-configs-yaml-bukkit:6.1.0-beta.4")
+    implementation("eu.okaeri:okaeri-configs-serdes-bukkit:6.1.0-beta.4")
 }
 
 java {
