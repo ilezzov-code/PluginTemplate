@@ -71,6 +71,7 @@ public final class Main extends JavaPlugin {
             }
         }
 
+        this.versionControl = new VersionControl(this);
         this.versionControl.startBackgroundCheckTask();
         this.versionControl.startCriticalNotifyTask();
 
