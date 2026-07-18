@@ -36,6 +36,7 @@ val pluginApiVersion: String by project
 val pluginAuthor: String by project
 val pluginWebsite: String by project
 val pluginMainCommand: String by project
+val pluginUpdateUrl: String by project
 
 buildConfig {
     className("BuildConfig")
@@ -48,6 +49,8 @@ buildConfig {
     buildConfigField("String", "WEBSITE", "\"$pluginWebsite\"")
     buildConfigField("String", "DESCRIPTION", "\"$pluginDescription\"")
     buildConfigField("String", "MAIN_COMMAND", "\"$pluginMainCommand\"")
+    buildConfigField("String", "UPDATE_URL", "\"$pluginUpdateUrl\"")
+    buildConfigField("String", "PLUGIN_VERSION", "\"$pluginVersion\"")
 }
 
 val copyJar by tasks.registering(Copy::class) {
