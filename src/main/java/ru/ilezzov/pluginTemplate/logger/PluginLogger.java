@@ -2,10 +2,8 @@ package ru.ilezzov.pluginTemplate.logger;
 
 import lombok.Setter;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
-import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.plugin.Plugin;
 import ru.ilezzov.pluginTemplate.color.LegacySerialize;
-import ru.ilezzov.pluginTemplate.placeholder.PluginPlaceholder;
 
 public class PluginLogger {
     private final ComponentLogger console;

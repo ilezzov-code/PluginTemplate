@@ -1,10 +1,8 @@
 package ru.ilezzov.pluginTemplate.version;
 
-import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 import ru.ilezzov.pluginTemplate.Main;
 import ru.ilezzov.pluginTemplate.color.Colorizer;
@@ -12,7 +10,6 @@ import ru.ilezzov.pluginTemplate.file.ConfigFile;
 import ru.ilezzov.pluginTemplate.file.MessageFile;
 import ru.ilezzov.pluginTemplate.logger.ConsoleMessage;
 import ru.ilezzov.pluginTemplate.logger.PluginLogger;
-import ru.ilezzov.pluginTemplate.message.MessageManager;
 import ru.ilezzov.pluginTemplate.permission.PermissionManager;
 import ru.ilezzov.pluginTemplate.permission.Permissions;
 import ru.ilezzov.pluginTemplate.placeholder.PluginPlaceholder;

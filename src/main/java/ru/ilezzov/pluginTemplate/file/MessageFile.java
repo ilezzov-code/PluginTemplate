@@ -1,6 +1,5 @@
 package ru.ilezzov.pluginTemplate.file;
 
-
 import eu.okaeri.configs.OkaeriConfig;
 import eu.okaeri.configs.annotation.Comment;
 import eu.okaeri.configs.annotation.CustomKey;
