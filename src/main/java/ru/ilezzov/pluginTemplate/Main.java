@@ -6,6 +6,7 @@ import eu.okaeri.configs.yaml.bukkit.serdes.SerdesBukkit;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import ru.ilezzov.pluginTemplate.event.EventManager;
 import ru.ilezzov.pluginTemplate.file.ConfigFile;
 import ru.ilezzov.pluginTemplate.file.MessageFile;
 import ru.ilezzov.pluginTemplate.logger.ConsoleMessage;
@@ -39,6 +40,9 @@ public final class Main extends JavaPlugin {
     @Getter
     private VersionControl versionControl;
 
+    @Getter
+    private EventManager eventManager;
+
     @Override
     public void onEnable() {
         this.pluginLogger = new PluginLogger(this);
@@ -47,7 +51,7 @@ public final class Main extends JavaPlugin {
         this.configFile = loadConfig();
         if (configFile.debug) {
             this.pluginLogger.setDebug(true);
-            this.pluginLogger.debug(this.consoleMessage.getMessage("plugin"));
+            this.pluginLogger.debug(this.consoleMessage.getMessage("plugin.debug.enabled"));
         }
 
         final String messageFileName = this.configFile.language.concat(".yml");
@@ -55,7 +59,7 @@ public final class Main extends JavaPlugin {
         this.messageFile = loadMessageFile(messageFileName);
         this.messageManager = new MessageManager(this);
 
-        this.pluginLogger.debug(this.consoleMessage.getMessage("plugin.file.message.loaded", messageFileName));
+        this.pluginLogger.debug(this.consoleMessage.getMessage("file.message.loaded", messageFileName));
 
         this.versionManager = new VersionManager(this.pluginLogger, this.consoleMessage);
         this.versionManager.loadVersionData();
@@ -69,6 +73,9 @@ public final class Main extends JavaPlugin {
 
         this.versionControl.startBackgroundCheckTask();
         this.versionControl.startCriticalNotifyTask();
+
+        this.eventManager = new EventManager(this);
+        eventManager.registerEvents();
 
     }
 
