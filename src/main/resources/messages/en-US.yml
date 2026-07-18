@@ -22,15 +22,11 @@ plugin:
 version:
   latest: "{P} <gray>You are running the latest version of the plugin: <green>{CURRENT_VERSION}</green></gray>"
   supported: "{P} <gray>You are running a supported version of the plugin (<yellow>{CURRENT_VERSION}</yellow>), however we recommend updating to the latest version (<green>{LATEST_VERSION}</green>)"
-  outdated: "{P} <gray>You are running an unsupported version of the plugin (<red>{CURRENT_VERSION}). <bold>{ACTION}</bold></red> Please immediately install the latest version (<green>{LATEST_VERSION}</green>)"
-  blacklist: "{P} <gray>You are running a blacklisted version of the plugin (<red>{CURRENT_VERSION}). <bold>{ACTION}.</bold></red> Please immediately install the latest version (<green>{LATEST_VERSION}</green>)"
+  outdated: "{P} <gray>You are running an unsupported version of the plugin (<red>{CURRENT_VERSION}). <bold>WE DO NOT RECOMMEND USING THIS PATCH.</bold></red> Please immediately install the latest version (<green>{LATEST_VERSION}</green>)"
+  blacklist: "{P} <gray>You are running a blacklisted version of the plugin (<red>{CURRENT_VERSION}). <bold>WE DO NOT RECOMMEND USING THIS PATCH.</bold></red> Please immediately install the latest version (<green>{LATEST_VERSION}</green>)"
   download: "{P} Download here — <yellow><click:open_url:{DOWNLOAD_LINK}>{DOWNLOAD_LINK}</click></yellow>"
   error: "{P_E} <red>An error occurred while fetching the plugin version. Learn more in the console</red>"
   loading: "{P} <gray>Loading the latest version of the plugin...</gray>"
-  action:
-    impossible-launch: "PLUGIN LAUNCH IS IMPOSSIBLE"
-    no-recommended: "WE DO NOT RECOMMEND USING THIS PATCH"
-    auto-stopping: "AUTOMATIC PLUGIN DISABLE"
 
 main-command:
   help: |

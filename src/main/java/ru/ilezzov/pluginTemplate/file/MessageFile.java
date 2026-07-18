@@ -74,19 +74,6 @@ public class MessageFile extends OkaeriConfig {
         public String download = "{P} Download here — <yellow><click:open_url:{DOWNLOAD_LINK}>{DOWNLOAD_LINK}</click></yellow>";
         public String error = "{P_E} <red>An error occurred while fetching the plugin version. Learn more in the console";
         public String loading = "{P} <gray>Loading the latest version of the plugin</gray>";
-
-        public ActionSubConfig action = new ActionSubConfig();
-
-        public static class ActionSubConfig extends OkaeriConfig {
-            @CustomKey("impossible-launch")
-            public String impossibleLaunch = "PLUGIN LAUNCH IS IMPOSSIBLE";
-
-            @CustomKey("no-recommended")
-            public String noRecommended = "WE DO NOT RECOMMEND USING THIS PATCH";
-
-            @CustomKey("auto-stopping")
-            public String autoStopping = "AUTOMATIC PLUGIN DISABLE";
-        }
     }
 
     public static class MainCommandSubConfig extends OkaeriConfig {
