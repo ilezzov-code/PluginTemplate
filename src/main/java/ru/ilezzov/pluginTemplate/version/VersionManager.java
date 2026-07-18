@@ -40,7 +40,7 @@ public class VersionManager {
                 return;
             } else {
                 this.logger.error(
-                        this.consoleMessage.getMessage("version.message.not_loaded"), versionTypeResponse.error()
+                        this.consoleMessage.getMessage("version.data.not_loaded"), versionTypeResponse.error()
                 );
             }
         } else {
@@ -48,11 +48,11 @@ public class VersionManager {
 
             if (e != null) {
                 this.logger.error(
-                        this.consoleMessage.getMessage("version.message.not_loaded", versionDataResponse.message()), e
+                        this.consoleMessage.getMessage("version.data.not_loaded", versionDataResponse.message()), e
                 );
             } else {
                 this.logger.error(
-                        this.consoleMessage.getMessage("version.message.not_loaded", versionDataResponse.message())
+                        this.consoleMessage.getMessage("version.data.not_loaded", versionDataResponse.message())
                 );
             }
         }
@@ -61,6 +61,10 @@ public class VersionManager {
 
     private Response<VersionData> fetchVersionData() {
         try {
+            this.logger.debug(
+                    this.consoleMessage.getMessage("version.data.loading")
+            );
+
             final URI uri = URI.create(UPDATE_URL);
             final URL url = uri.toURL();
             final URLConnection connection = url.openConnection();
@@ -81,6 +85,9 @@ public class VersionManager {
                 final Gson gson = new Gson();
                 final VersionData versionDate = gson.fromJson(content, VersionData.class);
 
+                this.logger.debug(
+                        this.consoleMessage.getMessage("version.data.loaded")
+                );
                 return Response.ok(versionDate);
             }
         } catch (final UnknownHostException e) {
@@ -116,6 +123,10 @@ public class VersionManager {
     }
 
     private Response<VersionType> identifyVersionType(final VersionData versionData) {
+        this.logger.debug(
+                this.consoleMessage.getMessage("version.type.identifying")
+        );
+
         if (versionData == null) {
             return Response.ok(VersionType.UNREACHABLE);
         }
@@ -152,6 +163,9 @@ public class VersionManager {
             return Response.ok(VersionType.SUPPORTED);
         }
 
+        this.logger.debug(
+                this.consoleMessage.getMessage("version.type.identified")
+        );
         return Response.ok(VersionType.LATEST);
     }
 
