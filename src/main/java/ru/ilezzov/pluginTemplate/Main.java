@@ -11,6 +11,7 @@ import ru.ilezzov.pluginTemplate.file.MessageFile;
 import ru.ilezzov.pluginTemplate.logger.ConsoleMessage;
 import ru.ilezzov.pluginTemplate.logger.PluginLogger;
 import ru.ilezzov.pluginTemplate.message.MessageManager;
+import ru.ilezzov.pluginTemplate.version.VersionControl;
 import ru.ilezzov.pluginTemplate.version.VersionData;
 import ru.ilezzov.pluginTemplate.version.VersionManager;
 import ru.ilezzov.pluginTemplate.version.VersionType;
@@ -52,7 +53,7 @@ public final class Main extends JavaPlugin {
         final String messageFileName = this.configFile.language.concat(".yml");
 
         this.messageFile = loadMessageFile(messageFileName);
-        this.messageManager = new MessageManager(this, messageFile);
+        this.messageManager = new MessageManager(this);
 
         this.pluginLogger.debug(this.consoleMessage.getMessage("plugin.file.message.loaded", messageFileName));
 
@@ -62,10 +63,12 @@ public final class Main extends JavaPlugin {
         if (this.configFile.versionControl.checkOnStartup) {
             if (!checkVersion()) {
                 this.stop();
+                return;
             }
         }
 
-
+        this.versionControl.startBackgroundCheckTask();
+        this.versionControl.startCriticalNotifyTask();
 
     }
 
@@ -137,7 +140,7 @@ public final class Main extends JavaPlugin {
             }
             case OUTDATED -> {
                 this.pluginLogger.error(
-                        this.consoleMessage.getMessage("version.message.outdated", PLUGIN_VERSION, latestVersion)
+                        this.consoleMessage.getMessage("version.message.outdated", PLUGIN_VERSION, this.consoleMessage.getMessage("version.message.action.impossible_launch"), latestVersion)
                 );
                 this.pluginLogger.error(
                         this.consoleMessage.getMessage("version.message.download", latestDownloadLink)
@@ -146,7 +149,7 @@ public final class Main extends JavaPlugin {
             }
             case BLACKLIST -> {
                 this.pluginLogger.error(
-                        this.consoleMessage.getMessage("version.message.blacklist", PLUGIN_VERSION, latestVersion)
+                        this.consoleMessage.getMessage("version.message.blacklist", PLUGIN_VERSION, this.consoleMessage.getMessage("version.message.action.impossible_launch"), latestVersion)
                 );
                 this.pluginLogger.error(
                         this.consoleMessage.getMessage("version.message.download", latestDownloadLink)
