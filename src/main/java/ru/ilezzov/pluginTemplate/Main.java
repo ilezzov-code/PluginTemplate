@@ -84,7 +84,13 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        if (this.versionControl != null) {
+            versionControl.stop();
+        }
 
+        if (this.eventManager != null) {
+            eventManager.unregisterEvents();
+        }
     }
 
     public void stop() {
