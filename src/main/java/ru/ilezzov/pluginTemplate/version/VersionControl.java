@@ -154,7 +154,7 @@ public class VersionControl {
                     final String latestVersion = versionData.getLatest().getVersion();
                     final String latestDownloadLink = versionData.getLatest().getDownloadUrl();
 
-                    final PluginPlaceholder placeholder = new PluginPlaceholder(this.message().plugin.prefix);
+                    final PluginPlaceholder placeholder = new PluginPlaceholder(this.message().plugin.prefix, this.message().plugin.prefixError);
 
                     placeholder.addPlaceholder("{CURRENT_VERSION}", PLUGIN_VERSION);
                     placeholder.addPlaceholder("{LATEST_VERSION}", latestVersion);
