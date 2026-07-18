@@ -58,7 +58,7 @@ public class MainCommand implements CommandExecutor, TabExecutor {
             case "version" -> handleVersion(sender);
             case "reload" -> handleReload(sender, placeholder);
             default -> handleHelp(sender, placeholder);
-        };
+        }
 
         return true;
     }

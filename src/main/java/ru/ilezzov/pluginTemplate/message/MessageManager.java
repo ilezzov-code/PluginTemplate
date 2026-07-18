@@ -19,9 +19,7 @@ public class MessageManager {
     }
 
     public void sendFromThread(final CommandSender sender, final String text ,final PluginPlaceholder placeholder) {
-        Bukkit.getScheduler().runTask(plugin, () -> {
-            this.send(sender, text, placeholder);
-        });
+        Bukkit.getScheduler().runTask(plugin, () -> this.send(sender, text, placeholder));
     }
 
     private Component parseComponent(final String text, final PluginPlaceholder placeholder) {
