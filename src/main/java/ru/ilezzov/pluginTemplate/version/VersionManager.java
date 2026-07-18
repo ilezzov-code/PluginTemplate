@@ -64,6 +64,7 @@ public class VersionManager {
             this.logger.debug(
                     this.consoleMessage.getMessage("version.data.loading")
             );
+            final long start = System.currentTimeMillis();
 
             final URI uri = URI.create(UPDATE_URL);
             final URL url = uri.toURL();
@@ -86,7 +87,7 @@ public class VersionManager {
                 final VersionData versionDate = gson.fromJson(content, VersionData.class);
 
                 this.logger.debug(
-                        this.consoleMessage.getMessage("version.data.loaded")
+                        this.consoleMessage.getMessage("version.data.loaded", System.currentTimeMillis() - start)
                 );
                 return Response.ok(versionDate);
             }
