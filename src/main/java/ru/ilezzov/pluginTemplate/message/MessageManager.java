@@ -1,4 +1,4 @@
-package ru.ilezzov.pluginTemplate.manager;
+package ru.ilezzov.pluginTemplate.message;
 
 import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
