@@ -6,6 +6,7 @@ import eu.okaeri.configs.yaml.bukkit.serdes.SerdesBukkit;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import ru.ilezzov.pluginTemplate.command.CommandManager;
 import ru.ilezzov.pluginTemplate.event.EventManager;
 import ru.ilezzov.pluginTemplate.file.ConfigFile;
 import ru.ilezzov.pluginTemplate.file.MessageFile;
@@ -78,6 +79,7 @@ public final class Main extends JavaPlugin {
         this.eventManager = new EventManager(this);
         eventManager.registerEvents();
 
+        new CommandManager(this).loadCommands();
     }
 
     @Override
