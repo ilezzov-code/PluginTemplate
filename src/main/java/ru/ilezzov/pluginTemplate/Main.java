@@ -88,6 +88,15 @@ public final class Main extends JavaPlugin {
         Bukkit.getPluginManager().disablePlugin(this);
     }
 
+    public void reloadMessageFile(final String oldFile, final String file) {
+        if (oldFile.equalsIgnoreCase(file)) {
+            this.messageFile.load();
+            return;
+        }
+
+        this.messageFile = loadMessageFile(file.concat(".yml"));
+    }
+
     private ConfigFile loadConfig() {
         return (ConfigFile) ConfigManager.create(ConfigFile.class)
                 .configure(opt -> {
