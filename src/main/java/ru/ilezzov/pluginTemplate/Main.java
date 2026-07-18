@@ -4,17 +4,20 @@ import eu.okaeri.configs.ConfigManager;
 import eu.okaeri.configs.yaml.bukkit.YamlBukkitConfigurer;
 import eu.okaeri.configs.yaml.bukkit.serdes.SerdesBukkit;
 import lombok.Getter;
-import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import ru.ilezzov.pluginTemplate.file.ConfigFile;
 import ru.ilezzov.pluginTemplate.file.MessageFile;
 import ru.ilezzov.pluginTemplate.logger.ConsoleMessage;
 import ru.ilezzov.pluginTemplate.logger.PluginLogger;
-import ru.ilezzov.pluginTemplate.manager.MessageManager;
+import ru.ilezzov.pluginTemplate.message.MessageManager;
+import ru.ilezzov.pluginTemplate.version.VersionData;
+import ru.ilezzov.pluginTemplate.version.VersionManager;
+import ru.ilezzov.pluginTemplate.version.VersionType;
 
 import java.io.File;
-import java.text.MessageFormat;
-import java.util.ResourceBundle;
+
+import static ru.ilezzov.pluginTemplate.BuildConfig.*;
 
 public final class Main extends JavaPlugin {
     @Getter
@@ -30,6 +33,10 @@ public final class Main extends JavaPlugin {
 
     @Getter
     private MessageManager messageManager;
+    @Getter
+    private VersionManager versionManager;
+    @Getter
+    private VersionControl versionControl;
 
     @Override
     public void onEnable() {
@@ -39,7 +46,7 @@ public final class Main extends JavaPlugin {
         this.configFile = loadConfig();
         if (configFile.debug) {
             this.pluginLogger.setDebug(true);
-            pluginLogger.debug(this.consoleMessage.getMessage("system.debug.enabled"));
+            this.pluginLogger.debug(this.consoleMessage.getMessage("plugin"));
         }
 
         final String messageFileName = this.configFile.language.concat(".yml");
@@ -47,13 +54,28 @@ public final class Main extends JavaPlugin {
         this.messageFile = loadMessageFile(messageFileName);
         this.messageManager = new MessageManager(this, messageFile);
 
-        pluginLogger.debug(this.consoleMessage.getMessage("plugin.file.message.loaded", messageFileName));
+        this.pluginLogger.debug(this.consoleMessage.getMessage("plugin.file.message.loaded", messageFileName));
+
+        this.versionManager = new VersionManager(this.pluginLogger, this.consoleMessage);
+        this.versionManager.loadVersionData();
+
+        if (this.configFile.versionControl.checkOnStartup) {
+            if (!checkVersion()) {
+                this.stop();
+            }
+        }
+
+
 
     }
 
     @Override
     public void onDisable() {
 
+    }
+
+    public void stop() {
+        Bukkit.getPluginManager().disablePlugin(this);
     }
 
     private ConfigFile loadConfig() {
@@ -84,5 +106,54 @@ public final class Main extends JavaPlugin {
                 })
                 .saveDefaults()
                 .load(true);
+    }
+
+    private boolean checkVersion() {
+        final VersionData versionData = this.versionManager.getVersionData();
+
+        if (versionData == null) {
+            return true;
+        }
+
+        final VersionType versionType = this.versionManager.getVersionType();
+        final String latestVersion = versionData.getLatest().getVersion();
+        final String latestDownloadLink = versionData.getLatest().getDownloadUrl();
+
+        return switch (versionType) {
+            case LATEST -> {
+                this.pluginLogger.info(
+                        this.consoleMessage.getMessage("version.message.latest", PLUGIN_VERSION)
+                );
+                yield true;
+            }
+            case SUPPORTED -> {
+                this.pluginLogger.warn(
+                        this.consoleMessage.getMessage("version.message.supported", PLUGIN_VERSION, latestVersion)
+                );
+                this.pluginLogger.warn(
+                        this.consoleMessage.getMessage("version.message.download", latestDownloadLink)
+                );
+                yield true;
+            }
+            case OUTDATED -> {
+                this.pluginLogger.error(
+                        this.consoleMessage.getMessage("version.message.outdated", PLUGIN_VERSION, latestVersion)
+                );
+                this.pluginLogger.error(
+                        this.consoleMessage.getMessage("version.message.download", latestDownloadLink)
+                );
+                yield false;
+            }
+            case BLACKLIST -> {
+                this.pluginLogger.error(
+                        this.consoleMessage.getMessage("version.message.blacklist", PLUGIN_VERSION, latestVersion)
+                );
+                this.pluginLogger.error(
+                        this.consoleMessage.getMessage("version.message.download", latestDownloadLink)
+                );
+                yield false;
+            }
+            case UNREACHABLE -> true;
+        };
     }
 }
