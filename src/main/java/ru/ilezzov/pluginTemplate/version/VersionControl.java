@@ -154,7 +154,8 @@ public class VersionControl {
                     final String latestVersion = versionData.getLatest().getVersion();
                     final String latestDownloadLink = versionData.getLatest().getDownloadUrl();
 
-                    final PluginPlaceholder placeholder = new PluginPlaceholder(this.message().plugin.prefix, this.message().plugin.prefixError);
+                    final PluginPlaceholder placeholder = new PluginPlaceholder(this.message().plugin.prefix, this.message().plugin.prefixError
+                    );
 
                     placeholder.addPlaceholder("{CURRENT_VERSION}", PLUGIN_VERSION);
                     placeholder.addPlaceholder("{LATEST_VERSION}", latestVersion);
@@ -209,6 +210,23 @@ public class VersionControl {
                 },
                 period, period
         );
+    }
+
+    public void stop() {
+        if (this.backgroundCheckTask != null && !this.backgroundCheckTask.isCancelled()) {
+            this.backgroundCheckTask.cancel();
+            this.pluginLogger.debug(
+                    this.consoleMessage.getMessage("version.control.task.background_check.stopped")
+            );
+        }
+
+        if (this.criticalNotifyTask != null && !this.criticalNotifyTask.isCancelled()) {
+            this.criticalNotifyTask.cancel();
+            this.pluginLogger.debug(
+                    this.consoleMessage.getMessage("version.control.task.critical_notify.stopped")
+            );
+        }
+
     }
 
     private MessageFile message() {
