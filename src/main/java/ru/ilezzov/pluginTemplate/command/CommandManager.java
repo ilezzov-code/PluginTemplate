@@ -24,7 +24,7 @@ public class CommandManager {
 
     public void loadCommands() {
         this.pluginLogger.debug(
-                this.consoleMessage.getMessage("plugin.command.all.registration")
+                this.consoleMessage.getMessage("command.registration.start")
         );
 
         final Map<String, CommandExecutor> commands = getCommands();
@@ -42,18 +42,18 @@ public class CommandManager {
                 }
 
                 this.pluginLogger.debug(
-                        this.consoleMessage.getMessage("plugin.command.registered", commandName)
+                        this.consoleMessage.getMessage("command.registration.success.single", commandName)
                 );
                 commandRegistered++;
             } else {
-                this.pluginLogger.debug(
-                        this.consoleMessage.getMessage("plugin.command.not_found", commandName)
+                this.pluginLogger.warn(
+                        this.consoleMessage.getMessage("command.registration.error.missing_declaration", commandName)
                 );
             }
         }
 
         this.pluginLogger.debug(
-                this.consoleMessage.getMessage("plugin.command.all.registered", commandRegistered)
+                this.consoleMessage.getMessage("command.registration.success.multiple", commandRegistered)
         );
     }
 

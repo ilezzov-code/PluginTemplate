@@ -57,7 +57,7 @@ public final class Main extends JavaPlugin {
         this.configFile = loadConfig();
         if (configFile.debug) {
             this.pluginLogger.setDebug(true);
-            this.pluginLogger.debug(this.consoleMessage.getMessage("plugin.debug.enabled"));
+            this.pluginLogger.debug(this.consoleMessage.getMessage("debug.enabled"));
         }
 
         final String messageFileName = this.configFile.language.concat(".yml");

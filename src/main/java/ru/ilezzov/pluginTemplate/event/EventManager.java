@@ -30,7 +30,7 @@ public class EventManager {
 
     public void registerEvents() {
         this.pluginLogger.debug(
-                this.consoleMessage.getMessage("plugin.event.all.registration")
+                this.consoleMessage.getMessage("event.registration.start")
         );
 
         final Map<Listener, Boolean> listeners = loadListeners();
@@ -41,33 +41,33 @@ public class EventManager {
 
                 this.registeredListener.add(listener);
                 this.pluginLogger.debug(
-                        this.consoleMessage.getMessage("plugin.event.registered", listener.getClass().getSimpleName())
+                        this.consoleMessage.getMessage("event.registration.success.single", listener.getClass().getSimpleName())
                 );
             }
         }
 
         this.pluginLogger.debug(
-                this.consoleMessage.getMessage("plugin.event.all.registered", this.registeredListener.size())
+                this.consoleMessage.getMessage("event.registration.success.multiple", this.registeredListener.size())
         );
     }
 
     public void unregisterEvents() {
         this.pluginLogger.debug(
-                this.consoleMessage.getMessage("plugin.event.all.unregistration")
+                this.consoleMessage.getMessage("event.unregistration.start")
         );
 
         final int eventsCount = this.registeredListener.size();
         for (final Listener listener : this.registeredListener) {
             HandlerList.unregisterAll(listener);
             this.pluginLogger.debug(
-                    this.consoleMessage.getMessage("plugin.event.unregistered", listener.getClass().getSimpleName())
+                    this.consoleMessage.getMessage("event.unregistration.success.single", listener.getClass().getSimpleName())
             );
         }
 
         this.registeredListener.clear();
 
         pluginLogger.debug(
-                this.consoleMessage.getMessage("plugin.event.all.unregistered", eventsCount)
+                this.consoleMessage.getMessage("event.unregistration.success.multiple", eventsCount)
         );
     }
 
@@ -75,7 +75,7 @@ public class EventManager {
         this.unregisterEvents();
         this.registerEvents();
         pluginLogger.debug(
-                this.consoleMessage.getMessage("plugin.event.all.reloaded")
+                this.consoleMessage.getMessage("event.reload.success")
         );
     }
 

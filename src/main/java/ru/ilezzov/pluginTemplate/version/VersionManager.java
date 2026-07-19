@@ -37,6 +37,9 @@ public class VersionManager {
 
             if (versionTypeResponse.success()) {
                 this.versionType = versionTypeResponse.data();
+                this.logger.debug(
+                        this.consoleMessage.getMessage("version.type.detection.success", versionType)
+                );
                 return;
             } else {
                 this.logger.error(
@@ -125,7 +128,7 @@ public class VersionManager {
 
     private Response<VersionType> identifyVersionType(final VersionData versionData) {
         this.logger.debug(
-                this.consoleMessage.getMessage("version.type.identifying")
+                this.consoleMessage.getMessage("version.type.detection.start")
         );
 
         if (versionData == null) {
@@ -164,9 +167,6 @@ public class VersionManager {
             return Response.ok(VersionType.SUPPORTED);
         }
 
-        this.logger.debug(
-                this.consoleMessage.getMessage("version.type.identified")
-        );
         return Response.ok(VersionType.LATEST);
     }
 
