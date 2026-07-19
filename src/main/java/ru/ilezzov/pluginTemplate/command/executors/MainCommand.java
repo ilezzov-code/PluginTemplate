@@ -9,7 +9,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.ilezzov.pluginTemplate.BuildConfig;
 import ru.ilezzov.pluginTemplate.Main;
+import ru.ilezzov.pluginTemplate.file.ConfigFile;
 import ru.ilezzov.pluginTemplate.file.MessageFile;
+import ru.ilezzov.pluginTemplate.logger.PluginLogger;
 import ru.ilezzov.pluginTemplate.message.MessageManager;
 import ru.ilezzov.pluginTemplate.permission.PermissionManager;
 import ru.ilezzov.pluginTemplate.permission.Permissions;
@@ -29,6 +31,9 @@ public class MainCommand implements CommandExecutor, TabExecutor {
     private final Main plugin;
     private final VersionManager versionManager;
     private final MessageManager messageManager;
+    private final ConfigFile configFile;
+
+    private final PluginLogger pluginLogger;
 
     private static final Map<String, String> ROOT_COMMANDS = Map.of(
             "reload", Permissions.RELOAD,
@@ -39,6 +44,8 @@ public class MainCommand implements CommandExecutor, TabExecutor {
         this.plugin = plugin;
         this.versionManager = plugin.getVersionManager();
         this.messageManager = plugin.getMessageManager();
+        this.configFile = plugin.getConfigFile();
+        this.pluginLogger = plugin.getPluginLogger();
     }
 
     @Override
@@ -151,11 +158,12 @@ public class MainCommand implements CommandExecutor, TabExecutor {
             return;
         }
 
-        final String oldMessageFile = this.plugin.getConfigFile().language;
+        final String oldMessageFile = this.configFile.language;
 
-        this.plugin.getConfigFile().load();
+        this.configFile.load();
+        this.pluginLogger.setDebug(this.configFile.debug);
 
-        final String messageFile = this.plugin.getConfigFile().language;
+        final String messageFile = this.configFile.language;
         this.plugin.reloadMessageFile(oldMessageFile, messageFile);
 
         placeholder.addPlaceholder("{P}", this.message().plugin.prefix);
