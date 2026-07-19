@@ -126,7 +126,8 @@ public class MainCommand implements CommandExecutor, TabExecutor {
 
             placeholder.addPlaceholder("{CURRENT_VERSION}", BuildConfig.PLUGIN_VERSION);
             placeholder.addPlaceholder("{LATEST_VERSION}", versionData.getLatest().getVersion());
-            
+            placeholder.addPlaceholder("{DOWNLOAD_LINK}", versionData.getLatest().getVersion());
+
             if (this.versionManager.getVersionType() == VersionType.LATEST) {
                 this.messageManager.sendFromThread(
                         sender, this.message().version.latest, placeholder
