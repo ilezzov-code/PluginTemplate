@@ -29,20 +29,22 @@ java {
     toolchain.languageVersion = JavaLanguageVersion.of(17)
 }
 
-val pluginName: String by project
-val pluginPackage: String by project
-val pluginVersion: String by project
-val pluginDescription: String by project
-val pluginMainClass: String by project
-val pluginApiVersion: String by project
-val pluginAuthor: String by project
-val pluginWebsite: String by project
-val pluginMainCommand: String by project
-val pluginUpdateUrl: String by project
-val pluginBasePermission: String by project
-val bStatsEnable: String by project
-val bStatsId: String by project
-val bStatsLanguageChartId: String by project
+fun property(name: String): String = providers.gradleProperty(name).get()
+
+val pluginName = property("pluginName")
+val pluginPackage = property("pluginPackage")
+val pluginVersion = property("pluginVersion")
+val pluginDescription = property("pluginDescription")
+val pluginMainClass = property("pluginMainClass")
+val pluginApiVersion = property("pluginApiVersion")
+val pluginAuthor = property("pluginAuthor")
+val pluginWebsite = property("pluginWebsite")
+val pluginMainCommand = property("pluginMainCommand")
+val pluginUpdateUrl = property("pluginUpdateUrl")
+val pluginBasePermission = property("pluginBasePermission")
+val bStatsEnable = property("bStatsEnable")
+val bStatsId = property("bStatsId")
+val bStatsLanguageChartId = property("bStatsLanguageChartId")
 
 buildConfig {
     className("BuildConfig")
@@ -88,7 +90,7 @@ tasks {
     }
 
     processResources {
-        val props = mapOf(
+        val propsPluginYml = mapOf(
             "pluginName" to pluginName,
             "pluginVersion" to pluginVersion,
             "pluginDescription" to pluginDescription,
@@ -99,11 +101,18 @@ tasks {
             "pluginMainCommand" to pluginMainCommand
         )
 
-        inputs.properties(props)
+        val propsMessageYml = mapOf(
+            "command" to pluginMainCommand
+        )
+
         filteringCharset = "UTF-8"
 
         filesMatching("plugin.yml") {
-            expand(props)
+            expand(propsPluginYml)
+        }
+
+        filesMatching("messages/") {
+            expand(propsMessageYml)
         }
     }
 }
