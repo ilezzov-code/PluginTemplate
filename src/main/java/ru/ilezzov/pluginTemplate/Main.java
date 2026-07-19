@@ -4,6 +4,8 @@ import eu.okaeri.configs.ConfigManager;
 import eu.okaeri.configs.yaml.bukkit.YamlBukkitConfigurer;
 import eu.okaeri.configs.yaml.bukkit.serdes.SerdesBukkit;
 import lombok.Getter;
+import org.bstats.bukkit.Metrics;
+import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import ru.ilezzov.pluginTemplate.command.CommandManager;
@@ -44,6 +46,9 @@ public final class Main extends JavaPlugin {
     @Getter
     private EventManager eventManager;
 
+    @Getter
+    private Metrics metrics;
+
     @Override
     public void onEnable() {
         this.pluginLogger = new PluginLogger(this);
@@ -80,6 +85,8 @@ public final class Main extends JavaPlugin {
         eventManager.registerEvents();
 
         new CommandManager(this).loadCommands();
+
+        loadMetrics();
     }
 
     @Override
@@ -183,5 +190,12 @@ public final class Main extends JavaPlugin {
             }
             case UNREACHABLE -> true;
         };
+    }
+
+    private void loadMetrics() {
+        this.metrics = new Metrics(this, BuildConfig.BSTATS_ID);
+        this.metrics.addCustomChart(
+                new SimplePie(BSTATS_LANGUAGE_CHART_ID, () -> this.configFile.language)
+        );
     }
 }

@@ -21,6 +21,8 @@ dependencies {
 
     implementation("eu.okaeri:okaeri-configs-yaml-bukkit:6.1.0-beta.4")
     implementation("eu.okaeri:okaeri-configs-serdes-bukkit:6.1.0-beta.4")
+
+    implementation("org.bstats:bstats-bukkit:3.2.1");
 }
 
 java {
@@ -38,6 +40,9 @@ val pluginWebsite: String by project
 val pluginMainCommand: String by project
 val pluginUpdateUrl: String by project
 val pluginBasePermission: String by project
+val bStatsEnable: String by project
+val bStatsId: String by project
+val bStatsLanguageChartId: String by project
 
 buildConfig {
     className("BuildConfig")
@@ -53,6 +58,10 @@ buildConfig {
     buildConfigField("String", "UPDATE_URL", "\"$pluginUpdateUrl\"")
     buildConfigField("String", "PLUGIN_VERSION", "\"$pluginVersion\"")
     buildConfigField("String", "BASE_PERMISSION", "\"$pluginBasePermission\"")
+
+    buildConfigField("boolean", "BSTATS_ENABLE", bStatsEnable)
+    buildConfigField("int", "BSTATS_ID", bStatsId)
+    buildConfigField("String", "BSTATS_LANGUAGE_CHART_ID", "\"$bStatsLanguageChartId\"")
 }
 
 val copyJar by tasks.registering(Copy::class) {
@@ -67,6 +76,9 @@ tasks.named<ShadowJar>("shadowJar") {
 
 tasks.shadowJar {
     configurations = project.configurations.runtimeClasspath.map { setOf(it) }
+
+    relocate("org.bstats", "${project.group}.libs.stats")
+
     archiveClassifier.set("")
 }
 
