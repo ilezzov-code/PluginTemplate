@@ -71,7 +71,7 @@ public class VersionControl {
                     final String latestVersion = versionData.getLatest().getVersion();
                     final String latestDownloadLink = versionData.getLatest().getDownloadUrl();
                     final String action = versionSecuritySection.lockdownOnCritical ?
-                            this.consoleMessage.getMessage("version.message.action.auto_stopping") : this.consoleMessage.getMessage("version.message.action.impossible_launch");
+                            this.consoleMessage.getMessage("version.message.action.auto_stopping") : this.consoleMessage.getMessage("version.message.action.no_recommended");
 
                     final boolean accepted = switch (versionType) {
                         case LATEST -> {
