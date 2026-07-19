@@ -11,6 +11,7 @@ import ru.ilezzov.pluginTemplate.BuildConfig;
 import ru.ilezzov.pluginTemplate.Main;
 import ru.ilezzov.pluginTemplate.file.ConfigFile;
 import ru.ilezzov.pluginTemplate.file.MessageFile;
+import ru.ilezzov.pluginTemplate.logger.ConsoleMessage;
 import ru.ilezzov.pluginTemplate.logger.PluginLogger;
 import ru.ilezzov.pluginTemplate.message.MessageManager;
 import ru.ilezzov.pluginTemplate.permission.PermissionManager;
@@ -29,11 +30,11 @@ import java.util.concurrent.CompletableFuture;
 
 public class MainCommand implements CommandExecutor, TabExecutor {
     private final Main plugin;
+    private final PluginLogger pluginLogger;
     private final VersionManager versionManager;
     private final MessageManager messageManager;
     private final ConfigFile configFile;
-
-    private final PluginLogger pluginLogger;
+    private final ConsoleMessage consoleMessage;
 
     private static final Map<String, String> ROOT_COMMANDS = Map.of(
             "reload", Permissions.RELOAD,
@@ -42,10 +43,11 @@ public class MainCommand implements CommandExecutor, TabExecutor {
 
     public MainCommand(final Main plugin) {
         this.plugin = plugin;
+        this.pluginLogger = plugin.getPluginLogger();
         this.versionManager = plugin.getVersionManager();
         this.messageManager = plugin.getMessageManager();
         this.configFile = plugin.getConfigFile();
-        this.pluginLogger = plugin.getPluginLogger();
+        this.consoleMessage = plugin.getConsoleMessage();
     }
 
     @Override
@@ -161,7 +163,10 @@ public class MainCommand implements CommandExecutor, TabExecutor {
         final String oldMessageFile = this.configFile.language;
 
         this.configFile.load();
-        this.pluginLogger.setDebug(this.configFile.debug);
+        if (this.configFile.debug) {
+            this.pluginLogger.setDebug(true);
+            this.pluginLogger.debug(this.consoleMessage.getMessage("debug.enabled"));
+        }
 
         final String messageFile = this.configFile.language;
         this.plugin.reloadMessageFile(oldMessageFile, messageFile);
