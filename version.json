@@ -1,6 +1,6 @@
 {
   "latest": {
-    "version": "1.0.0",
+    "version": "1.0.1",
     "release_date": "2026-01-01",
     "download_url": "https://github.com/ilezzov-code/PluginTemplate/releases/tag/1.0.0",
     "changes": [
@@ -8,7 +8,7 @@
     ]
   },
   "compatibility": {
-    "min_required_version": "1.0.0",
+    "min_required_version": "0.0.9",
     "blacklisted_versions": [
       "1.0.0-SNAPSHOT"
     ]
