@@ -46,7 +46,7 @@ val bStatsLanguageChartId: String by project
 
 buildConfig {
     className("BuildConfig")
-    packageName("ru.ilezzov.pluginTemplate")
+    packageName(pluginPackage)
 
     buildConfigField("String", "NAME", "\"$pluginName\"")
     buildConfigField("String", "MAIN_CLASS", "\"$pluginMainClass\"")
@@ -77,7 +77,7 @@ tasks.named<ShadowJar>("shadowJar") {
 tasks.shadowJar {
     configurations = project.configurations.runtimeClasspath.map { setOf(it) }
 
-    relocate("org.bstats", "${project.group}.libs.stats")
+    relocate("org.bstats", "${pluginPackage}.libs.stats")
 
     archiveClassifier.set("")
 }
