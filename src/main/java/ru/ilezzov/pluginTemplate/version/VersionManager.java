@@ -75,6 +75,7 @@ public class VersionManager {
 
             connection.setConnectTimeout(5000);
             connection.setReadTimeout(5000);
+            connection.setRequestProperty("User-Agent", "ilezzov-code/PluginTemplate-" + PLUGIN_VERSION);
 
             try (final InputStream in = connection.getInputStream()) {
                 byte[] bytes = in.readAllBytes();
