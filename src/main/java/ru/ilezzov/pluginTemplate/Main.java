@@ -54,7 +54,7 @@ public final class Main extends JavaPlugin {
         this.pluginLogger = new PluginLogger(this);
         this.consoleMessage = new ConsoleMessage("messages");
 
-        this.configFile = loadConfig();
+        this.configFile = this.loadConfig();
         if (configFile.debug) {
             this.pluginLogger.setDebug(true);
             this.pluginLogger.debug(this.consoleMessage.getMessage("debug.enabled"));
@@ -71,7 +71,7 @@ public final class Main extends JavaPlugin {
         this.versionManager.loadVersionData();
 
         if (this.configFile.versionControl.checkOnStartup) {
-            if (!checkVersion()) {
+            if (!this.checkVersion()) {
                 this.stop();
                 return;
             }
@@ -86,7 +86,8 @@ public final class Main extends JavaPlugin {
 
         new CommandManager(this).loadCommands();
 
-        loadMetrics();
+        this.loadMetrics();
+        this.sendEnableMessage();
     }
 
     @Override
@@ -98,6 +99,8 @@ public final class Main extends JavaPlugin {
         if (this.eventManager != null) {
             eventManager.unregisterEvents();
         }
+
+        this.sendDisableMessage();
     }
 
     public void stop() {
@@ -196,6 +199,66 @@ public final class Main extends JavaPlugin {
         this.metrics = new Metrics(this, BuildConfig.BSTATS_ID);
         this.metrics.addCustomChart(
                 new SimplePie(BSTATS_LANGUAGE_CHART_ID, () -> this.configFile.language)
+        );
+    }
+
+    private void sendEnableMessage() {
+        this.pluginLogger.info(
+                this.consoleMessage.getMessage("plugin.enable.banner.1")
+        );
+        this.pluginLogger.info(
+                this.consoleMessage.getMessage("plugin.enable.banner.2", NAME, PLUGIN_VERSION)
+        );
+        this.pluginLogger.info(
+                this.consoleMessage.getMessage("plugin.enable.banner.3")
+        );
+        this.pluginLogger.info(
+                this.consoleMessage.getMessage("plugin.enable.banner.4", String.join(", ", this.getDescription().getAuthors()))
+        );
+        this.pluginLogger.info(
+                this.consoleMessage.getMessage("plugin.enable.banner.5", WEBSITE)
+        );
+        this.pluginLogger.info(
+                this.consoleMessage.getMessage("plugin.enable.banner.6", this.configFile.language)
+        );
+        this.pluginLogger.info(
+                this.consoleMessage.getMessage("plugin.enable.banner.7")
+        );
+        this.pluginLogger.info(
+                this.consoleMessage.getMessage("plugin.enable.banner.8", ISSUE_URL)
+        );
+        this.pluginLogger.info(
+                this.consoleMessage.getMessage("plugin.enable.banner.9")
+        );
+    }
+
+    private void sendDisableMessage() {
+        this.pluginLogger.info(
+                this.consoleMessage.getMessage("plugin.enable.banner.1")
+        );
+        this.pluginLogger.info(
+                this.consoleMessage.getMessage("plugin.disable.banner.2", NAME, PLUGIN_VERSION)
+        );
+        this.pluginLogger.info(
+                this.consoleMessage.getMessage("plugin.enable.banner.3")
+        );
+        this.pluginLogger.info(
+                this.consoleMessage.getMessage("plugin.enable.banner.4", String.join(", ", this.getDescription().getAuthors()))
+        );
+        this.pluginLogger.info(
+                this.consoleMessage.getMessage("plugin.enable.banner.5", WEBSITE)
+        );
+        this.pluginLogger.info(
+                this.consoleMessage.getMessage("plugin.enable.banner.6", this.configFile.language)
+        );
+        this.pluginLogger.info(
+                this.consoleMessage.getMessage("plugin.enable.banner.7")
+        );
+        this.pluginLogger.info(
+                this.consoleMessage.getMessage("plugin.enable.banner.8", ISSUE_URL)
+        );
+        this.pluginLogger.info(
+                this.consoleMessage.getMessage("plugin.enable.banner.9")
         );
     }
 }
